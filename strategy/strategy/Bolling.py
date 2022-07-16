@@ -1,6 +1,5 @@
-from strategy.Strategy import Strategy
-from util.util import *
 from util.logger import log
+from util.util import *
 
 
 class BollingV1(Strategy):
@@ -266,13 +265,8 @@ class BollingV5(Strategy):
             self.sell_data_process(df, index, sell_price)
 
 
-# 使用收盘价来判断
-# 盈利：1.7w
-#
 class BollingV6(Strategy):
-    '''
-    '''
-    '''
+    """
     5：
     买入：第一天触碰upper
     卖出：收盘价第一天低于upper，以收盘价卖出
@@ -285,7 +279,7 @@ class BollingV6(Strategy):
     收益变为0.6K
     问题分析：
     卖出的太早，导致无法获取之后的利润
-    '''
+    """
 
     def fill_data(self, df):
         append_bollard(df)
@@ -296,20 +290,25 @@ class BollingV6(Strategy):
         if (df.loc[index, 'upper'] < df.loc[index, 'close']) \
                 & (df.loc[index, 'ma5'] > df.loc[index, 'ma20']) \
                 & (df.loc[index - 1, 'ma20'] < df.loc[index, 'ma20']):
-            # print("买入")
             # 如果开盘直接开在布林带之上，马上以开盘价买入
             # 否则按照upper价格买入
             if df.loc[index, 'open'] > df.loc[index - 1, 'upper']:
                 buy_price = df.loc[index, 'open']
             else:
                 buy_price = df.loc[index - 1, 'upper']
-            log.debug("难道没有调用么？")
-            self.buy_data_process(df, index, buy_price)
+            try:
+                Strategy.buy_data_process(df, index, buy_price)
+                log.debug('买入后，Stratey的状态：'+str(Strategy.global_context))
+            except Exception as e:
+                log.error("open:" + str(df.loc[index, 'open']))
+                log.error("upper:" + str(df.loc[index - 1, 'upper']))
+                log.error(buy_price)
+                raise e
 
     def sell(self, df, index):
         # 已经买入，如果下穿上线，则卖出
         # 卖出价格，如果低开，开盘价低于upper，则使用open作为卖出价格，否则使用upper卖出
-        if (df.loc[index, 'upper'] > df.loc[index, 'close']):
+        if df.loc[index, 'upper'] > df.loc[index, 'close']:
             # print("卖出")
             sell_price = df.loc[index, 'close']
-            self.sell_data_process(df, index, sell_price)
+            Strategy.sell_data_process(df, index, sell_price)

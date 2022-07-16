@@ -1,7 +1,5 @@
-import akshare as ak
 import pandas as pd
-import datetime as dt
-import numpy as np
+
 from util.logger import log
 
 
@@ -52,35 +50,39 @@ class Strategy:
         pass
 
     def buy(self, df, index):
-        '''
+        """
         is_trading = False and money>0才能买入
-        '''
+        """
         pass
 
-    def buy_data_process(self, df, index, buy_price):
-        log.debug('买入时，开始对Strategy.global_context 进行处理')
-        buy_day = df.loc[index, 'date']
-        Strategy.global_context['is_trading'] = True
-        Strategy.global_context['buy_day'] = buy_day
-        money = Strategy.global_context['money']
-        Strategy.global_context['volums'] = int(money / buy_price)
-        Strategy.global_context['money'] = 0
-        Strategy.global_context['buy_price'] = buy_price
-        Strategy.global_context['max_price'] = buy_price
-        log.debug("在调用buy方法后，Strategy的状态："+ str(Strategy.global_context))
-        print("是log不管用了么？")
+    @staticmethod
+    def buy_data_process(df, index, buy_price):
+        try:
+            buy_day = df.loc[index, 'date']
+            Strategy.global_context['is_trading'] = True
+            Strategy.global_context['buy_day'] = buy_day
+            money = Strategy.global_context['money']
+            Strategy.global_context['volums'] = int(money / buy_price)
+            Strategy.global_context['money'] = 0
+            Strategy.global_context['buy_price'] = buy_price
+            Strategy.global_context['max_price'] = buy_price
+        except Exception as e:
+            log.error(money)
+            log.error(buy_price)
+            raise e
 
     def buy_m(self, df_d, index, df_m):
         pass
 
     def sell(self, df, index):
-        '''
+        """
         is_trading = True：在交易中，才能卖出
         sell_day > buy_day才能卖出
-        '''
+        """
         pass
 
-    def sell_data_process(self, df, index, sell_price):
+    @staticmethod
+    def sell_data_process(df, index, sell_price):
         sell_day = df.loc[index, 'date']
         volums = Strategy.global_context['volums']
         money = round((volums * sell_price), 2)
@@ -96,7 +98,6 @@ class Strategy:
         Strategy.global_context['is_trading'] = False
         Strategy.global_context['buy_day'] = None
         Strategy.global_context['money'] = money
-
 
     def sell_m(self, df_d, index, df_m):
         pass

@@ -8,7 +8,7 @@ _std_fh.setFormatter(_formatter)
 
 _logger.addHandler(_std_fh)
 
-_logger.setLevel(logging.DEBUG)
+_logger.setLevel(logging.INFO)
 _logger.propagate = False
 
 log = _logger

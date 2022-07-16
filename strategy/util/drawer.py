@@ -45,7 +45,7 @@ def draw_K(df, extend_lines=None, down_graf=None, trades=None, width="900px", he
             type_="inside",
             xaxis_index=[0, 1],
             # 初始的框选范围
-            range_start=80,
+            range_start=0,
             range_end=100,
         ),
         opts.DataZoomOpts(
@@ -53,7 +53,7 @@ def draw_K(df, extend_lines=None, down_graf=None, trades=None, width="900px", he
             xaxis_index=[0, 1],
             type_="slider",
             pos_top="95%",
-            range_start=80,
+            range_start=0,
             range_end=100,
         )
     ])

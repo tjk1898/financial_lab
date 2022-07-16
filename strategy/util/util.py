@@ -203,7 +203,7 @@ def get_trades_line(df, trades):
         trades_df = pd.merge(df, trades_df[['sell_day', 'own_money']], how='left', left_on='date', right_on='sell_day')[
             ['date', 'own_money']]
         line_current = get_line(trades_df, 'own_money', name, show_symbol=True, show_label=True, is_smooth=False)
-        line_current.set_global_opts(datazoom_opts=opts.DataZoomOpts(range_start=10, range_end=80))
+        line_current.set_global_opts(datazoom_opts=opts.DataZoomOpts(range_start=0, range_end=100))
 
         if line is None:
             line = line_current
