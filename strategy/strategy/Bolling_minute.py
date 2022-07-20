@@ -1,5 +1,5 @@
 from strategy.Strategy import Strategy
-from util.util import *
+from utils.util import *
 
 class Bolling_m_V1(Strategy):
     '''

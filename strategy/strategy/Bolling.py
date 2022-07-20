@@ -1,5 +1,5 @@
-from util.logger import log
-from util.util import *
+from utils.logger import log
+from utils.util import *
 
 
 class BollingV1(Strategy):

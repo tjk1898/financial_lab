@@ -1,5 +1,5 @@
-from util.util import *
-from util.drawer import *
+from utils.util import *
+from utils.drawer import *
 from Bolling import *
 from Runner import Runner
 from Strategy import Strategy

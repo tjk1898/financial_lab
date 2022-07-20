@@ -1,15 +1,10 @@
-from pyecharts.charts import *
-from pyecharts.components import Table
-from pyecharts.commons.utils import JsCode
-from pyecharts import options as opts
-from pyecharts.globals import ThemeType
 import os
-from util.dicts import *
-from util.drawer import *
+from utils.dicts import *
+from utils.drawer import *
 import pandas as pd
 from strategy.Strategy import Strategy
 from strategy.Runner import Runner
-from util.logger import log
+from utils.logger import log
 
 
 def get_third(e):

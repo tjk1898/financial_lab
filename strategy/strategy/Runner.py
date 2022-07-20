@@ -1,6 +1,6 @@
 import pandas as pd
 from strategy.Strategy import Strategy
-from util.logger import log
+from utils.logger import log
 
 
 class Runner():

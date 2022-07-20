@@ -1,14 +1,15 @@
 import pandas as pd
 
-from util.logger import log
+from utils.logger import log
 
 
 class Strategy:
+    start_money = 100000
     # 只适用于一只股票
     # 静态变量
     global_context = {
-        'start_money': 10000,
-        'money': 10000,  # 可用资金
+        'start_money': start_money,
+        'money': start_money,  # 可用资金
         'security': None,  # 持有股票代码
         'volums': 0,  # 持有股票数量
         'trades': [],  # 交易-已经完成的 [{'buy_day':,'sell_day':,'profit':'title':,'own_money':}]
@@ -21,8 +22,8 @@ class Strategy:
     @staticmethod
     def init():
         Strategy.global_context = {
-            'start_money': 10000,
-            'money': 10000,  # 可用资金
+            'start_money': Strategy.start_money,
+            'money': Strategy.start_money,  # 可用资金
             'security': None,  # 持有股票代码
             'volums': 0,  # 持有股票数量
             'trades': [],  # 交易-已经完成的 [{'buy_day':,'sell_day':,'profit':'title':,'own_money':}]
@@ -121,3 +122,51 @@ class Strategy:
             else:
                 last_own_money = trade_data.loc[i, 'own_money']
         return trade_data
+
+
+class StrategyMulti:
+
+    __global_context = {
+        'money': 200000,  # 可用资金
+        'slippage': 0,  # 设置滑点
+        'stock_num_limit': 1,  # 股票数量限制，最大同时持有多少只股票
+        'money_limit': 10000,  # 每只股票最多占用的资金量
+        'trades': {},  # 已经完成的交易记录 {security:[{'buy_day':,'sell_day':,'volume':,'profit':,'hold_days':}]}
+        'trading': {},  # 正在进行的交易 {security:[{'buy_day':,'buy_price':,'volume':}]
+    }
+
+    @classmethod
+    def set_start_money(cls,money):
+        cls.__global_context['money'] = money
+
+    @classmethod
+    def set_slippage(cls,slippage):
+        cls.__global_context['slippage'] = slippage
+
+    @classmethod
+    def set_stock_limit(cls,num):
+        cls.__global_context['stock_num_limit'] = num
+
+    def __init__(self, df: pd.DataFrame, df_m: pd.DataFrame = None, start_money=20000, slippage=0.0004):
+        """
+        初始化数据
+        :param df:
+        :param df_m:
+        """
+        self.df = df
+        self.df_m = df_m
+
+        StrategyMulti.__global_context['slippage'] = slippage
+
+    def data_process(self):
+        """
+        对df和df_m进行数据预处理，添加需要的数据项
+        :return:
+        """
+        pass
+
+    def buy(self, index):
+        pass
+
+    def sell(self, index):
+        pass
